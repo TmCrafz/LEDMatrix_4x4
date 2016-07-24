@@ -12,15 +12,21 @@ void wait(float seconds);
 
 int main(void)
 {
-	// Set register in register B pin PB1 as output
-	DDRC |= (1 << PC0);
-	// Set pin PB1 to high
-	PORTC |= ( 1 << PC0);
+	char LEDMatrixRow[4] = { PC0, PC1, PC2, PC3 };
+	char LEDMatrixCol[4] = { PD0, PD1, PD2, PD3 };
+	// Set PC0 - PC3 as output
+	DDRC |= 0x0F;
+	// Set PC0 - PC3 to low
+	PORTC &= ~0x0F;
+	//PORTC |= ( 1 << PC0);
 	
-	// Set register in register B pin PB1 as output
-	DDRD |= (1 << PD0);
-	// Set pin PB1 to high
-	PORTD |= ( 1 << PD0);
+	// Set PD0 - PD3 as output
+	DDRD |= 0x0F;
+	// Set PD0 - PD3 to low
+	PORTD &= ~0x0F;
+	
+	PORTC |= ( 1 << PC2);
+	PORTD |= ( (1 << PD3) | (1 << PD2) );
     /* Replace with your application code */
     while (1) 
     {
@@ -30,5 +36,5 @@ int main(void)
 
 void wait(float seconds)
 {
-	_delay_ms(8);	
+	_delay_ms(8);		
 }
