@@ -30,6 +30,5 @@ int main(void)
 
 void wait(float seconds)
 {
-	_delay_ms(8);
-	//_delay_ms(millis);
+	_delay_ms(8);	
 }
