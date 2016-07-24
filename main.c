@@ -8,33 +8,44 @@
  *  Row change after every 1/120 seconds
  */
 
-void wait(float seconds);
+void wait();
 
 int main(void)
 {
-	char LEDMatrixRow[4] = { PC0, PC1, PC2, PC3 };
-	char LEDMatrixCol[4] = { PD0, PD1, PD2, PD3 };
+	// We use the Ports PC0 - PC3 and PD0 - PD3 as outputs for the LED Matrix
+	const char LEDMatrixRow[4] = { 1 << PC0,  1 << PC1, 1 << PC2,  1 << PC3 };
+	const char LEDMatrixCol[4] = { 1 << PD0, 1 << PD1, 1 << PD2, 1 << PD3 };
+			
 	// Set PC0 - PC3 as output
 	DDRC |= 0x0F;
-	// Set PC0 - PC3 to low
-	PORTC &= ~0x0F;
-	//PORTC |= ( 1 << PC0);
-	
 	// Set PD0 - PD3 as output
 	DDRD |= 0x0F;
-	// Set PD0 - PD3 to low
-	PORTD &= ~0x0F;
 	
-	PORTC |= ( 1 << PC2);
-	PORTD |= ( (1 << PD3) | (1 << PD2) );
-    /* Replace with your application code */
+	//PORTC = LEDMatrixRow[3];
+	//PORTD = LEDMatrixCol[3] | LEDMatrixCol[2] | LEDMatrixCol[1] | LEDMatrixCol[0];
+	
+	
     while (1) 
     {
-		
-    }
-}
+		// We have to multiplex the LED Matrix, so only the LEDs of one row are lighting at the same time		
+		for (char i = 0; i != 4; i++) {
+			// Get the row which is on
+			char row = LEDMatrixRow[i];
+			char columns = 0;
+			// Now get all LEDs of this column
+			for (char j = 0; j != 4; j++) {
+				columns |= LEDMatrixCol[j];				
+			}
+			// Let the LEDs glow
+			PORTC = row;
+			PORTD = columns;
+			// Wait until we let the next row glow
+			wait();
+		}		
+    }	
+} 
 
-void wait(float seconds)
+void wait()
 {
-	_delay_ms(8);		
+	_delay_ms(80);		
 }
