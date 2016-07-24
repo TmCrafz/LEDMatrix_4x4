@@ -28,12 +28,14 @@ int main(void)
     while (1) 
     {
 		// We have to multiplex the LED Matrix, so only the LEDs of one row are lighting at the same time		
-		for (char i = 0; i != 4; i++) {
+		for (char i = 0; i != 4; i++) 
+		{
 			// Get the row which is on
 			char row = LEDMatrixRow[i];
 			char columns = 0;
 			// Now get all LEDs of this column
-			for (char j = 0; j != 4; j++) {
+			for (char j = 0; j != 4; j++)
+			{
 				columns |= LEDMatrixCol[j];				
 			}
 			// Let the LEDs glow
